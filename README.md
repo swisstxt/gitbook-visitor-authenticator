@@ -37,6 +37,6 @@ sites:
 ## Build & Publish
 
 ```shell
-docker build -t docker.swisstxt.ch/gitbook-visitor-authenticator:$(git describe --tags --always)
+docker build . -t docker.swisstxt.ch/gitbook-visitor-authenticator:$(git describe --tags --always)
 docker push docker.swisstxt.ch/gitbook-visitor-authenticator:$(git describe --tags --always)
 ```
