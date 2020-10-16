@@ -1,21 +1,53 @@
 from flask import Flask, jsonify, url_for, abort, make_response, request, redirect, session
 from authlib.integrations.flask_client import OAuth
 from authlib.jose import jwt
+from distutils.util import strtobool
 import json
+import os
 import yaml
 import datetime
 from omegaconf import OmegaConf
 from pprint import pprint
-
-config = OmegaConf.load('config.yaml')
+import logging
 
 app = Flask(__name__)
+
+# If started by Gunicorn
+if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
+    # Set Logging
+    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_error_logger.handlers
+    app.logger.setLevel(gunicorn_error_logger.level)
+
+
+    app.logger.info("Gunicorn Detected. Starting with additional configuration.")
+
+    # Proxy Fix for use with Ingress Controller
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.logger.warning('ProxyFix is enabled. \
+X_Forwarded_For, X_Host, X_Proto are used to determine clients information. \
+ONLY USE THIS WITH A PROXY!')
+    app.wsgi_app = ProxyFix(app.wsgi_app , x_proto=1, x_host=1, x_for=1)
+
+    # Gunicorn Metrics
+    from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
+    metrics = GunicornPrometheusMetrics(app)
+
+# If not started with gunicorn
+else:
+    metrics = PrometheusMetrics(app)
+
+# Load YAML Configuration
+config = OmegaConf.load('config.yaml')
+
+# Set Flask Config
 app.secret_key = config["secretkey"]
 app.config.update(
     AZUREAD_CLIENT_ID = config["azuread"]["client_id"],
     AZUREAD_CLIENT_SECRET = config["azuread"]["client_secret"]
 )
 
+# Configure Azure OpenID Connect
 oauth = OAuth(app)
 oauth.register(
     name='azuread',
@@ -67,3 +99,7 @@ def auth():
     redirecturl = f"{config['sites'][site]['url']}{location}?jwt_token={gitbooktoken}"
 
     return redirect(redirecturl)
+
+@app.route("/healthz")
+def healthz():
+    return "ok"

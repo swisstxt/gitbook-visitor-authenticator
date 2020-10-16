@@ -8,8 +8,9 @@ Flask = "*"
 Authlib = "*"
 requests = "*"
 PyYAML = "*"
-waitress = "*"
 omegaconf = "*"
+gunicorn = "*"
+prometheus-flask-exporter = "*"
 
 [dev-packages]
 
