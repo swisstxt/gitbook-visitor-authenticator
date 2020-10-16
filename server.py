@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, url_for, abort, make_response, request, redirect, session
+from flask import Flask, jsonify, url_for, abort, make_response, request, redirect, session, render_template_string
 from authlib.integrations.flask_client import OAuth
 from authlib.jose import jwt
 from distutils.util import strtobool
@@ -86,7 +86,7 @@ def auth():
     usergroup_set = set(user['groups'])
     sitegroup_set = set(config['sites'][site]['groups'])
     if not len(usergroup_set.intersection(sitegroup_set)) > 0:
-        abort(403)
+        abort(403, description=f"User {user.preferred_username} has no read access to space {site}.")
 
     header = {'alg': 'HS256'}
     payload = {
@@ -104,3 +104,13 @@ def auth():
 @app.route("/healthz")
 def healthz():
     return "ok"
+
+@app.errorhandler(403)
+def page_not_found(e):
+    pprint(e)
+    return render_template_string(
+"""
+<h1>Forbidden</h1>
+<p>{{ error }}
+<p>Please contact {{ contact_email }} to request access.
+""", error=e, contact_email=config['contact_email']), 403

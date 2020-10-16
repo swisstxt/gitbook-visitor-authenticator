@@ -21,6 +21,7 @@ You can see an example here:
 
 ```yaml
 secretkey: ${env:FLASK_SECRET}                       # Secret Key Used for Session Cookie Signing
+contact_email: some@mail.com                         # Configure this email for Error Messages (ex. 403)
 azuread:
   client_id: 12345678-1234-abcd-1234-123abc456efg    # Azure AD Client ID
   client_secret: ${env:AZUREAD_SECRET}               # Azure AD Client Secret
