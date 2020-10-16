@@ -35,6 +35,7 @@ ONLY USE THIS WITH A PROXY!')
 
 # If not started with gunicorn
 else:
+    from prometheus_flask_exporter import PrometheusMetrics
     metrics = PrometheusMetrics(app)
 
 # Load YAML Configuration
