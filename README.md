@@ -33,6 +33,8 @@ sites:
     key: ${env:GITBOOK_KEY_VISITOR_AUTH_TEST}        # Key provided by GitBook Visitor Authentication Feature
     groups:
     - STXT-G-CloudDev                                # Security Groups that are allowed as Readers
+    users:
+    - joshua.huegli@swisstxt.ch                      # Preferred Usernames (E-Mails) that are allowed as Readers
 ```
 
 ## Development

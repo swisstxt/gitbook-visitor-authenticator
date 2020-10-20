@@ -83,9 +83,10 @@ def auth():
     token = oauth.azuread.authorize_access_token()
     user = oauth.azuread.parse_id_token(token)
 
-    usergroup_set = set(user['groups'])
-    sitegroup_set = set(config['sites'][site]['groups'])
-    if not len(usergroup_set.intersection(sitegroup_set)) > 0:
+    usergroup_set = set(user['groups'] or [])
+    sitegroup_set = set(config['sites'][site]['groups'] or [])
+    allowed_users = config['sites'][site]['users'] or []
+    if not (len(usergroup_set.intersection(sitegroup_set)) > 0 or user["preferred_username"] in allowed_users):
         abort(403, description=f"User {user.preferred_username} has no read access to space {site}.")
 
     header = {'alg': 'HS256'}
