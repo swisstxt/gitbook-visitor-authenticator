@@ -1,6 +1,6 @@
-# GitBook Visitor Authenticator
+# GitBook Visitor Authenticator (AzureAD)
 
-Used to authenticate users to GitBook Spaces with the Visitor Authenticator Feature.
+Used to authenticate and authorize AzureAD users to GitBook Spaces with the Visitor Authenticator Feature.
 
 ## Workflow
 
