@@ -1,0 +1,55 @@
+kind: pipeline
+type: docker
+name: build-publish-tagged-images
+
+trigger:
+  branch:
+  - harness
+  event:
+  - tag
+
+steps:
+- name: docker
+  image: plugins/docker
+  settings:
+    repo: ${container_registry}/gitbook-visitorauth
+    auto_tag: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+---
+kind: pipeline
+type: docker
+name: build-publish-tagged-images
+
+trigger:
+  event:
+  - pull_request
+
+steps:
+- name: docker
+  image: plugins/docker
+  settings:
+    repo: ${container_registry}/gitbook-visitorauth
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    tags:
+      - ${DRONE_COMMIT_BRANCH}
+      - ${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+- name: notify-cd
+  image: plugins/webhook
+  settings:
+    urls: ${cd_webhook_url}
+    content_type: application/json
+    template: |
+      {
+        "application": "${cd_application}"
+        "parameters": {
+          "pr_name": "${DRONE_COMMIT_BRANCH}",
+          "image_tag": "${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
+        }
+      }
