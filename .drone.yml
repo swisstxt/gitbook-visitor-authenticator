@@ -1,4 +1,5 @@
 kind: pipeline
+type: docker
 name: build-publish-image-tag
 
 trigger:
@@ -20,6 +21,7 @@ steps:
 
 ---
 kind: pipeline
+type: docker
 name: build-publish-image-pullrequest
 
 trigger:
@@ -30,7 +32,8 @@ steps:
 - name: docker
   image: plugins/docker
   settings:
-    repo: ${container_registry}/gitbook-visitorauth
+    repo: ${container_registry}/${container_registry_project}/gitbook-visitorauth
+    registry: ${container_registry}
     username:
       from_secret: docker_username
     password:
