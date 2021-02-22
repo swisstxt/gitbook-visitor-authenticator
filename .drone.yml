@@ -1,5 +1,5 @@
 kind: pipeline
-type: docker
+type: kubernetes
 name: build-publish-image-tag
 
 trigger:
@@ -21,7 +21,7 @@ steps:
 
 ---
 kind: pipeline
-type: docker
+type: kubernetes
 name: build-publish-image-pullrequest
 
 trigger:
