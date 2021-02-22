@@ -1,5 +1,4 @@
 kind: pipeline
-type: kubernetes
 name: build-publish-image-tag
 
 trigger:
@@ -11,7 +10,6 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
-  privileged: true
   settings:
     repo: ${container_registry}/gitbook-visitorauth
     auto_tag: true
@@ -22,7 +20,6 @@ steps:
 
 ---
 kind: pipeline
-type: kubernetes
 name: build-publish-image-pullrequest
 
 trigger:
@@ -32,7 +29,6 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
-  privileged: true
   settings:
     repo: ${container_registry}/gitbook-visitorauth
     username:
