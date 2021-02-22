@@ -2,16 +2,6 @@ kind: pipeline
 type: docker
 name: build-publish-image-tag
 
-environment:
-  CONTAINER_REGISTRY:
-    from_secret: container_registry
-  CONTAINER_REGISTRY_PROJECT:
-    from_secret: container_registry_project
-  CD_WEBHOOK_URL:
-    from_secret: cd_webhook_url
-  CD_APPLICATION:
-    from_secret: cd_application
-
 trigger:
   branch:
   - harness
@@ -21,6 +11,11 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
+  environment:
+    CONTAINER_REGISTRY:
+      from_secret: container_registry
+    CONTAINER_REGISTRY_PROJECT:
+      from_secret: container_registry_project
   settings:
     repo: ${CONTAINER_REGISTRY}/${CONTAINER_REGISTRY_PROJECT}/gitbook-visitorauth
     registry: ${CONTAINER_REGISTRY}
@@ -42,6 +37,11 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
+  environment:
+    CONTAINER_REGISTRY:
+      from_secret: container_registry
+    CONTAINER_REGISTRY_PROJECT:
+      from_secret: container_registry_project
   settings:
     repo: ${CONTAINER_REGISTRY}/${CONTAINER_REGISTRY_PROJECT}/gitbook-visitorauth
     registry: ${CONTAINER_REGISTRY}
@@ -52,8 +52,14 @@ steps:
     tags:
       - ${DRONE_COMMIT_BRANCH}
       - ${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+
 - name: notify-cd
   image: plugins/webhook
+  environment:
+    CD_WEBHOOK_URL:
+      from_secret: cd_webhook_url
+    CD_APPLICATION:
+      from_secret: cd_application
   settings:
     urls: ${CD_WEBHOOK_URL}
     content_type: application/json
