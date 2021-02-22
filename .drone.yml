@@ -11,6 +11,7 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
+  privileged: true
   settings:
     repo: ${container_registry}/gitbook-visitorauth
     auto_tag: true
@@ -31,6 +32,7 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
+  privileged: true
   settings:
     repo: ${container_registry}/gitbook-visitorauth
     username:
