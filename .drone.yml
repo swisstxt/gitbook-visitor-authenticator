@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: build-publish-tagged-images
+name: build-publish-image-tag
 
 trigger:
   branch:
@@ -22,7 +22,7 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: build-publish-tagged-images
+name: build-publish-image-pullrequest
 
 trigger:
   event:
