@@ -35,7 +35,7 @@ trigger:
   - pull_request
 
 steps:
-- name: docker
+- name: debug
   image: debian
   environment:
     CONTAINER_REGISTRY:
