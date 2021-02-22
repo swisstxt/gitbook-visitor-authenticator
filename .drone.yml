@@ -36,6 +36,16 @@ trigger:
 
 steps:
 - name: docker
+  image: debian
+  environment:
+    CONTAINER_REGISTRY:
+      from_secret: container_registry
+    CONTAINER_REGISTRY_PROJECT:
+      from_secret: container_registry_project
+  commands:
+    - env
+
+- name: docker
   image: plugins/docker
   environment:
     CONTAINER_REGISTRY:
