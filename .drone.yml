@@ -11,14 +11,9 @@ trigger:
 steps:
 - name: docker
   image: plugins/docker
-  environment:
-    CONTAINER_REGISTRY:
-      from_secret: container_registry
-    CONTAINER_REGISTRY_PROJECT:
-      from_secret: container_registry_project
   settings:
-    repo: ${CONTAINER_REGISTRY}/${CONTAINER_REGISTRY_PROJECT}/gitbook-visitorauth
-    registry: ${CONTAINER_REGISTRY}
+    repo: "registry.swisstxt.ch/stxt-proj-cloud-tools/gitbook-visitorauth"
+    registry: registry.swisstxt.ch
     auto_tag: true
     username:
       from_secret: docker_username
@@ -35,43 +30,27 @@ trigger:
   - pull_request
 
 steps:
-- name: debug
-  image: debian
-  environment:
-    CONTAINER_REGISTRY:
-      from_secret: container_registry
-    CONTAINER_REGISTRY_PROJECT:
-      from_secret: container_registry_project
-  commands:
-    - env
-
 - name: docker
   image: plugins/docker
-  environment:
-    CONTAINER_REGISTRY:
-      from_secret: container_registry
-    CONTAINER_REGISTRY_PROJECT:
-      from_secret: container_registry_project
   settings:
-    repo: ${CONTAINER_REGISTRY}/${CONTAINER_REGISTRY_PROJECT}/gitbook-visitorauth
-    registry: ${CONTAINER_REGISTRY}
+    repo: "registry.swisstxt.ch/stxt-proj-cloud-tools/gitbook-visitorauth"
+    registry: registry.swisstxt.ch
     username:
       from_secret: docker_username
     password:
       from_secret: docker_password
     tags:
-      - ${DRONE_COMMIT_BRANCH}
-      - ${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+      - "${DRONE_COMMIT_BRANCH}"
+      - "${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
 
 - name: notify-cd
   image: plugins/webhook
   environment:
-    CD_WEBHOOK_URL:
-      from_secret: cd_webhook_url
     CD_APPLICATION:
       from_secret: cd_application
   settings:
-    urls: ${CD_WEBHOOK_URL}
+    urls:
+      from_secret: cd_webhook_url
     content_type: application/json
     template: |
       {
