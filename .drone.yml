@@ -54,7 +54,7 @@ steps:
     content_type: application/json
     template: |
       {
-        "application": "${CD_APPLICATION}",
+        "application": "AbMjtuwlQCmGhucBngrOHw",
         "parameters": {
           "pr_name": "${DRONE_COMMIT_BRANCH}",
           "image_tag": "${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
