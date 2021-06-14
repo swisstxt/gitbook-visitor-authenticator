@@ -17,25 +17,19 @@ Configuration is done via the config.yaml inside the same directory.
 
 Inside the config.yaml its possible to use Environment Variables. You can use this for secrets, for example.
 
-You can see an example here:
+The default config is only an example and needs to be customized for your environment. You can do this via environment variables, which also makes it suitable for injecting Kubernetes secrets.
 
-```yaml
-secretkey: ${env:FLASK_SECRET}                       # Secret Key Used for Session Cookie Signing
-contact_email: some@mail.com                         # Configure this email for Error Messages (ex. 403)
-azuread:
-  client_id: 12345678-1234-abcd-1234-123abc456efg    # Azure AD Client ID
-  client_secret: ${env:AZUREAD_SECRET}               # Azure AD Client Secret
-  openid_connect_url: https://login.microsoftonline.com/blabla/v2.0/.well-known/openid-configuration
-                                                     # Open ID Connect URL from you Azure AD App
-sites:
-  visitor-auth-test:
-    url: https://docs.swisstxt.ch/visitor-auth-test  # URL of GitBook Space
-    key: ${env:GITBOOK_KEY_VISITOR_AUTH_TEST}        # Key provided by GitBook Visitor Authentication Feature
-    groups:
-    - STXT-G-CloudDev                                # Security Groups that are allowed as Readers
-    users:
-    - joshua.huegli@swisstxt.ch                      # Preferred Usernames (E-Mails) that are allowed as Readers
-```
+Use the `${env:ENVIRONMENT_VARIABLE_NAME}` construct for this purpose.
+
+With the default config, you need to override the following variables:
+
+* **FLASK_SECRET**: Secret Key Used for Session Cookie Signing
+* **NOTIFICATION_MAIL**: Configure this email for Error Messages (ex. 403)
+* **AZUREAD_CLIENT_ID**: Azure AD Client ID
+* **AZUREAD_SECRET**: Azure AD Client Secret
+* **AZUREAD_OPENID_URL**: Open ID Connect URL from you Azure AD App
+* **GITBOOK_SPACE_URL**: URL of GitBook Space
+* **GITBOOK_KEY**: Key provided by GitBook Visitor Authentication Feature
 
 ## Development
 
