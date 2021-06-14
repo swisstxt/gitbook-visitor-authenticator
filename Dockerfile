@@ -2,6 +2,7 @@ FROM python:3.8-slim
 RUN pip install --no-cache-dir pipenv
 WORKDIR /app
 COPY Pipfile* /app/
+COPY config.yaml /app/
 RUN cd /app && \
     pipenv install --system --deploy
 # Maybe "pipenv sync" would be better. I'm unsure:
