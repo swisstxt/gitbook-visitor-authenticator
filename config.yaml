@@ -1,0 +1,13 @@
+---
+secretkey: ${env:FLASK_SECRET}                       # Secret Key Used for Session Cookie Signing
+contact_email: ${env:NOTIFICATION_MAIL}              # Configure this email for Error Messages (ex. 403)
+azuread:
+  client_id: ${env:AZUREAD_CLIENT_ID}                # Azure AD Client ID
+  client_secret: ${env:AZUREAD_SECRET}               # Azure AD Client Secret
+  openid_connect_url: ${env:AZUREAD_OPENID_URL}      # Open ID Connect URL from you Azure AD App
+sites:
+  visitor-auth-test:
+    url: ${env:GITBOOK_SPACE_URL}                    # URL of GitBook Space
+    key: ${env:GITBOOK_KEY}                          # Key provided by GitBook Visitor Authentication Feature
+    groups: []                                       # Security Groups that are allowed as Readers
+    users: []                                        # Preferred Usernames (E-Mails) that are allowed as Readers
