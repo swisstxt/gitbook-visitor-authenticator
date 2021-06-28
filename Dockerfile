@@ -6,8 +6,7 @@ USER appuser
 WORKDIR /app
 
 COPY Pipfile* /app/
-COPY *.py /app/
-COPY LICENSE /app/
+COPY *.py LICENSE /app/
 
 RUN pip install --no-cache-dir pipenv
 RUN /app/.local/bin/pipenv install --system --deploy
