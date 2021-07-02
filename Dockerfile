@@ -1,7 +1,7 @@
 FROM python:3.8-slim
 
-RUN useradd -d /app -m appuser
-USER appuser
+RUN useradd -u 65532 -d /app -m appuser
+USER 65532
 
 WORKDIR /app
 
