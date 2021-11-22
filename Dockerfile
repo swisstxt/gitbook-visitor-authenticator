@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.9-slim
 
 RUN useradd -u 65532 -d /app -m appuser
 USER 65532

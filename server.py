@@ -66,7 +66,7 @@ def login(site):
     redirect_uri = url_for('auth', _external=True)
     resp = make_response(oauth.azuread.authorize_redirect(redirect_uri))
     session['site'] = site
-    session['location'] = request.args.get('location', '/')
+    session['location'] = request.args.get('location', '')
     return resp
 
 
@@ -99,7 +99,7 @@ def auth():
     key = config['sites'][site]['key']
     gitbooktoken = jwt.encode(header, payload, key).decode("utf-8")
 
-    redirecturl = f"{config['sites'][site]['url']}{location}?jwt_token={gitbooktoken}"
+    redirecturl = f"{config['sites'][site]['url']}/{location}?jwt_token={gitbooktoken}"
 
     return redirect(redirecturl)
 
