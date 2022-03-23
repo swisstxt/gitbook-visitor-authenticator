@@ -61,7 +61,4 @@ FLASK_ENV=development FLASK_APP=server flask run
 
 ## Build & Publish
 
-```shell
-docker build . -t registry.swisstxt.ch/stxt-proj-cloud-tools/gitbook-visitor-authenticator:$(git describe --tags --always)
-docker push registry.swisstxt.ch/stxt-proj-cloud-tools/gitbook-visitor-authenticator:$(git describe --tags --always)
-```
+Build & Publish is done automatically with GitHub Actions.
