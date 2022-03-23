@@ -1,12 +1,17 @@
 FROM python:3.9-slim
-RUN pip install --no-cache-dir pipenv
+
+RUN useradd -u 65532 -d /app -m appuser
+USER 65532
+
 WORKDIR /app
-COPY Pipfile* /app/
-RUN cd /app && \
-    pipenv install --system --deploy
+
+COPY Pipfile* *.py LICENSE /app/
+
+RUN pip install --no-cache-dir pipenv
+RUN /app/.local/bin/pipenv install --system --deploy
 # Maybe "pipenv sync" would be better. I'm unsure:
 # https://pipenv-fork.readthedocs.io/en/latest/advanced.html#using-pipenv-for-deployments
-COPY * /app/
+
 EXPOSE 8080 9090
 ENV prometheus_multiproc_dir=/tmp
-CMD ["gunicorn", "-c", "gunicorn_conf.py", "server:app"]
+CMD ["/app/.local/bin/gunicorn", "-c", "gunicorn_conf.py", "server:app"]
