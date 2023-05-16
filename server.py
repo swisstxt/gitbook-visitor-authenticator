@@ -81,7 +81,7 @@ def auth():
         abort(404)
 
     token = oauth.azuread.authorize_access_token()
-    user = oauth.azuread.parse_id_token(token)
+    user = oauth.azuread.parse_id_token(token, None)
     preferred_username = user["preferred_username"].lower()
 
     usergroup_set = set(user['groups'] or [])

@@ -13,6 +13,3 @@ gunicorn = "*"
 prometheus-flask-exporter = "*"
 
 [dev-packages]
-
-[requires]
-python_version = "3.9"
