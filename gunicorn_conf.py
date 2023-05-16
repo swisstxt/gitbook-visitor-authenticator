@@ -1,6 +1,5 @@
 import logging
 import multiprocessing
-import os
 
 import gunicorn.glogging
 from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics

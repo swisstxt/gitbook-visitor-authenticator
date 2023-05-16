@@ -6,8 +6,6 @@ name = "pypi"
 [packages]
 Flask = "*"
 Authlib = "*"
-requests = "*"
-PyYAML = "*"
 omegaconf = "*"
 gunicorn = "*"
 prometheus-flask-exporter = "*"

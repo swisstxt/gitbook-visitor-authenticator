@@ -1,14 +1,12 @@
-from flask import Flask, jsonify, url_for, abort, make_response, request, redirect, session, render_template_string
+import logging
+import os
+from pprint import pprint
+
 from authlib.integrations.flask_client import OAuth
 from authlib.jose import jwt
-from distutils.util import strtobool
-import json
-import os
-import yaml
-import datetime
+from flask import (Flask, abort, make_response, redirect,
+                   render_template_string, request, session, url_for)
 from omegaconf import OmegaConf
-from pprint import pprint
-import logging
 
 app = Flask(__name__)
 
@@ -18,7 +16,6 @@ if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
     gunicorn_error_logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_error_logger.handlers
     app.logger.setLevel(gunicorn_error_logger.level)
-
 
     app.logger.info("Gunicorn Detected. Starting with additional configuration.")
 
@@ -30,7 +27,8 @@ ONLY USE THIS WITH A PROXY!')
     app.wsgi_app = ProxyFix(app.wsgi_app , x_proto=1, x_host=1, x_for=1)
 
     # Gunicorn Metrics
-    from prometheus_flask_exporter.multiprocess import GunicornPrometheusMetrics
+    from prometheus_flask_exporter.multiprocess import \
+        GunicornPrometheusMetrics
     metrics = GunicornPrometheusMetrics(app)
 
 # If not started with gunicorn
