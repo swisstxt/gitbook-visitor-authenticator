@@ -9,5 +9,6 @@ Authlib = "*"
 omegaconf = "*"
 gunicorn = "*"
 prometheus-flask-exporter = "*"
+requests = "*"
 
 [dev-packages]
