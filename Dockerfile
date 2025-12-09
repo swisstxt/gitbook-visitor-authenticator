@@ -1,17 +1,21 @@
-FROM python:3.11
+FROM docker.io/python:3.11-slim AS base
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONFAULTHANDLER=1
 
-RUN useradd -u 65532 -d /app -m appuser
-USER 65532
+FROM base AS builder
+RUN pip install pipenv
+COPY Pipfile* ./
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
-WORKDIR /app
-
-COPY Pipfile* *.py LICENSE /app/
-
-RUN pip install --no-cache-dir pipenv
-RUN /app/.local/bin/pipenv install --system --deploy
-# Maybe "pipenv sync" would be better. I'm unsure:
-# https://pipenv-fork.readthedocs.io/en/latest/advanced.html#using-pipenv-for-deployments
+FROM base
+RUN adduser --uid 65532 nonroot
+COPY --from=builder /.venv /.venv
+ENV PATH="/.venv/bin:$PATH"
+COPY *.py LICENSE ./
 
 EXPOSE 8080 9090
+USER 65532
 ENV prometheus_multiproc_dir=/tmp
-CMD ["/app/.local/bin/gunicorn", "-c", "gunicorn_conf.py", "server:app"]
+ENTRYPOINT ["/app/.local/bin/gunicorn", "-c", "gunicorn_conf.py", "server:app"]
