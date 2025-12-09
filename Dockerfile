@@ -18,4 +18,4 @@ COPY *.py LICENSE ./
 EXPOSE 8080 9090
 USER 65532
 ENV prometheus_multiproc_dir=/tmp
-ENTRYPOINT ["/app/.local/bin/gunicorn", "-c", "gunicorn_conf.py", "server:app"]
+ENTRYPOINT ["/.venv/bin/gunicorn", "-c", "gunicorn_conf.py", "server:app"]
