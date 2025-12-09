@@ -13,6 +13,7 @@ FROM base
 RUN adduser --uid 65532 nonroot
 COPY --from=builder /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
+WORKDIR /app
 COPY *.py LICENSE ./
 
 EXPOSE 8080 9090
